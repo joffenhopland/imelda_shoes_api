@@ -12,6 +12,8 @@ from datetime import datetime
 
 # Init app
 app = Flask(__name__)
+CORS(app)
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.app_context().push()
 # Database
@@ -69,7 +71,7 @@ class Customer(db.Model):
     phone = db.Column(db.String(100))
     created_at = db.Column(db.String(100))
     modified_at = db.Column(db.String(100))
-    num_orders = db.Column(db.Float)
+    num_orders = db.Column(db.Integer)
 
     def __init__(self, username, password, email, first_name, last_name, address, phone, created_at, modified_at, num_orders):
         self.username = username
