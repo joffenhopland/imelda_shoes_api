@@ -45,8 +45,8 @@ print(response_ext_api.status_code)
 def exportRevenue():
     # export revenue here
     # send emails maybe
-    # view on analystics page in Imelda Shoes POS app
-    # get revenue from internal database
+    # view on analytics page in Imelda Shoes POS app
+    # get revenue from internal database by querying the orders table and add the total of all orders made this day
     # if using something like Stripe then we can get the revenue from Stripe API
     pass
 
@@ -172,12 +172,6 @@ def get_customer(id):
 # Order items class
 # Order details class
 # Payment details class
-# Revenue/sales class
-
-
-
-
-
 
 # Run Server
 if __name__ == '__main__':
