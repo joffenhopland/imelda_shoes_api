@@ -12,6 +12,7 @@ requests = "*"
 flask-cors = "*"
 scheduler = "*"
 schedule = "*"
+stripe = "*"
 
 [dev-packages]
 autopep8 = "*"

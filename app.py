@@ -7,6 +7,7 @@ import os
 from flask_cors import CORS
 from datetime import datetime
 import schedule
+import stripe
 # from customer import Customer, CustomerSchema
 
 
@@ -73,10 +74,25 @@ def exportOutOfStock():
 
     # can here send an email with the products in those two lists
 
+
 # schedules the functions to run every day
 schedule.every().day.at("23:59:59").do(exportRevenue)
 schedule.every().day.at("23:59:59").do(exportOutOfStock)
 
+# create coupon using stripe
+def createCouponCode():
+    stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    coupon = stripe.Coupon.create(
+    amount_off=750,
+    duration="repeating",
+    duration_in_months=3,
+    currency = "nok",
+    max_redemptions = 1,
+    )
+    print(f'Coupon id: {coupon.id}')
+    # can now send this coupon in an email as well as show on landing page after third order is made
+
+# createCouponCode()
 
 # Get All Products
 @app.route('/product', methods=['GET'])
