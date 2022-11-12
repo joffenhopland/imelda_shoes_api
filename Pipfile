@@ -10,6 +10,8 @@ flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 requests = "*"
 flask-cors = "*"
+scheduler = "*"
+schedule = "*"
 
 [dev-packages]
 autopep8 = "*"

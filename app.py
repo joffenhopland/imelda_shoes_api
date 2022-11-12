@@ -6,6 +6,7 @@ from flask_marshmallow import Marshmallow
 import os
 from flask_cors import CORS
 from datetime import datetime
+import schedule
 # from customer import Customer, CustomerSchema
 
 
@@ -39,6 +40,43 @@ external_api_url = 'https://fakestoreapi.com/products'
 response_ext_api = requests.get(
     external_api_url)
 print(response_ext_api.status_code)
+
+# Run these functions at 11:59:59 every day
+def exportRevenue():
+    # export revenue here
+    # send emails maybe
+    # view on analystics page in Imelda Shoes POS app
+    # get revenue from internal database
+    # if using something like Stripe then we can get the revenue from Stripe API
+    pass
+
+def exportOutOfStock():
+    # can also write this to two tables in the internal database so that we can we it in the pos app
+    out_of_stock_products = []
+    almost_out_of_stock_products = []
+    # get all products from external api
+    data = response_ext_api.text
+    all_products = json.loads(data)
+    for product in all_products:
+        if product['rating']['count'] == 0:
+            out_of_stock_products.append(product)
+        elif product['rating']['count'] == 1 or product['rating']['count'] == 2:
+            almost_out_of_stock_products.append(product)
+    
+    for product in out_of_stock_products:
+        # add product to out_of_stock_products table in internal db so that we can show it in the pos app
+        pass
+
+    for product in almost_out_of_stock_products:
+        # add product to almost_out_of_stock_products table in internal db so that we can show it in the pos app
+        pass
+
+    # can here send an email with the products in those two lists
+
+# schedules the functions to run every day
+schedule.every().day.at("23:59:59").do(exportRevenue)
+schedule.every().day.at("23:59:59").do(exportOutOfStock)
+
 
 # Get All Products
 @app.route('/product', methods=['GET'])
@@ -108,7 +146,7 @@ def add_customer():
     phone = request.json['phone']
     created_at = datetime.now().strftime("%H:%M:%S")
     modified_at = datetime.now().strftime("%H:%M:%S")
-    num_orders = 0
+    num_orders = request.json['num_orders']
 
     new_customer = Customer(username, password, email, first_name,
                             last_name, address, phone, created_at, modified_at, num_orders)
@@ -135,6 +173,10 @@ def get_customer(id):
 # Order details class
 # Payment details class
 # Revenue/sales class
+
+
+
+
 
 
 # Run Server
