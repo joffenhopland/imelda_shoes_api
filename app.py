@@ -8,6 +8,9 @@ from flask_cors import CORS
 from datetime import datetime
 import schedule
 import stripe
+import smtplib
+from email.message import EmailMessage
+
 # from customer import Customer, CustomerSchema
 
 
@@ -91,6 +94,22 @@ def createCouponCode():
     )
     print(f'Coupon id: {coupon.id}')
     # can now send this coupon in an email as well as show on landing page after third order is made
+    email_address = 'hoplandmusic@gmail.com'
+    email_password = "xbfgwqomdjvqjidk"
+
+    # create email
+    msg = EmailMessage()
+    msg['Subject'] = "Your coupon code!"
+    msg['From'] = email_address
+    msg['To'] = "joffenbratli@gmail.com"
+    msg.set_content(f"Here is your coupon code from Imelda Shoes: {coupon.id}")
+
+    # send email
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(email_address, email_password)
+        smtp.send_message(msg)
+        
+    return coupon
 
 # createCouponCode()
 
@@ -188,6 +207,12 @@ def get_customer(id):
 # Order items class
 # Order details class
 # Payment details class
+
+# Get coupon
+@app.route('/coupon', methods=['GET'])
+def get_coupon():
+  coupon = createCouponCode()
+  return jsonify(coupon)
 
 # Run Server
 if __name__ == '__main__':
